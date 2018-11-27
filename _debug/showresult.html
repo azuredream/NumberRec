@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<title>showresult</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta charset="UTF-8">
+<meta name="description" content="overview & stats" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+</head>
+<body style="background:#d1d1d1;">
+    <div id="signature" style="background:#000;width:28px;height:28px;"></div>
+    <p style="text-align: center">
+        <b style="color: red">result</b>
+    </p>
+    <div id="result" style="background:#ffffff;width:50px;height:50px;">
+	<b style="color: red">nub:{{message}}
+	</b>
+    </div>
+    <div id="someelement"></div>
+    <script src="{{ url_for('static', filename='jquery-3.3.1.min.js') }}"></script>
+    <!--[if lt IE 9]>
+        <script src="jSignature/flashcanvas.js"></script>
+    <![endif]-->
+    <script src="{{ url_for('static', filename='jSignature.min.js') }}"></script>
+    
+</body>
+</html>

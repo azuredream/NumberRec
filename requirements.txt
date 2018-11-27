@@ -1,0 +1,7 @@
+Flask
+Redis
+cassandra-driver
+Pillow
+numpy
+tensorflow
+logging

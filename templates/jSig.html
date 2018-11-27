@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<title>手写数字识别</title>
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+
+
+<body style="background:#d1d1d1;">
+
+
+<div class="container">
+
+    <div class="container">&nbsp</div>
+    <div id="signature" style=""></div>
+    <h6>请在上方书写数字</h6>
+    <input class="btn btn-primary btn-xs" type="button" value="识别数字" id="yes"/>
+    <div class="container">&nbsp</div>
+    <!<div class="container" id="result" style="background:#d1d1d1;border:2px;">
+	<img src= {{picsrc}}></img>
+	<h6>识别结果: {{message}}</h6>
+    <!</div>
+    <!<div class="container">
+    <!</div>
+    
+
+    
+    <!<input type="button" value="下载" id="download"/>
+    <!<input type="button" value="重写" id="reset"/>
+    <div class="container" id="someelement"></div>
+</div>
+
+
+
+    <script src="{{ url_for('static', filename='jquery-3.3.1.min.js') }}"></script>
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+    <!--[if lt IE 9]>
+        <script src="jSignature/flashcanvas.js"></script>
+    <![endif]-->
+    <script src="{{ url_for('static', filename='jSignature.min.js') }}"></script>
+    <script>
+	document.body.style.zoom = 4;
+	function uploadComplete(){
+        }
+	function uploadFailed(){
+        }
+	function progressFunction(){
+        }
+
+        $(function() {
+            var $sigdiv = $("#signature");
+            $sigdiv.jSignature({height:28,width:28,'color' : '#ffffff','lineWidth' : '2','background-color': '#000'}); // 初始化jSignature插件.
+            $("#yes").click(function(){
+                //将画布内容转换为图片
+                var datapair = $sigdiv.jSignature("getData", "image");
+                var i = new Image();
+                i.src = "data:" + datapair[0] + "," + datapair[1];
+                $(i).appendTo($("#someelement")); // append the image (SVG) to DOM.
+
+		//利用canvas生成png
+		// canvas
+		var canvas = document.createElement('canvas');
+		var context = canvas.getContext('2d');
+		// canvas对图片进行缩放
+		targetWidth = 28;
+		targetHeight = 28;
+                canvas.width = targetWidth;
+                canvas.height = targetHeight;
+                // 清除画布
+                context.clearRect(0, 0, targetWidth, targetHeight);
+                // 图片压缩
+                context.drawImage(i, 0, 0, targetWidth, targetHeight);
+		//准备上传图片数据
+		//datapair = $sigdiv.jSignature("getData","native");
+
+		//datapair[0]=data:image/svg+xml;base64,
+		//datapair[1]=svgbase64的字符串
+
+
+		window.location.href = "/file?imgdata="+i.src;
+            });
+		
+
+
+            //$sigdiv.jSignature("setData", "data:" + datapair.join(","));
+            $("#download").click(function(){
+                downloadFile("a.png", convertBase64UrlToBlob($("img").attr("src")));
+            });
+            $("#reset").click(function(){
+                $sigdiv.jSignature("reset"); //重置画布，可以进行重新作画.
+                $("#someelement").html("");
+            });
+        });
+
+        function downloadFile(fileName, blob){
+            var aLink = document.createElement('a');
+            var evt = document.createEvent("HTMLEvents");
+            evt.initEvent("click", false, false);//initEvent 不加后两个参数在FF下会报错, 感谢 Barret Lee 的反馈
+            aLink.download = fileName;
+            aLink.href = URL.createObjectURL(blob);
+            aLink.dispatchEvent(evt);
+        }
+        /**
+         * 将以base64的图片url数据转换为Blob
+         * @param urlData
+         *            用url方式表示的base64图片数据
+         */
+        function convertBase64UrlToBlob(urlData){
+             
+            var bytes=window.atob(urlData.split(',')[1]);        //去掉url的头，并转换为byte
+             
+            //处理异常,将ascii码小于0的转换为大于0
+            var ab = new ArrayBuffer(bytes.length);
+            var ia = new Uint8Array(ab);
+            for (var i = 0; i < bytes.length; i++) {
+                ia[i] = bytes.charCodeAt(i);
+            }
+ 
+            return new Blob( [ab] , {type : 'image/png'});
+        }
+    </script>
+ 
+</body>
+</html>
