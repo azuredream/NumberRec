@@ -4,6 +4,9 @@
   input"docker stack deploy -c docker-compose.yml webcube"<br>
   to start the project.<br>
   URL:localhost<br>
+  
+  IF THE SERVER CONTAINER CANNOT START, PLEASE BUILD THE FLASKWEB FOLDER LOCALLY
+  AND CHANGE "azuredream/numberrec:latest" TO THE LOCAL IMAGE NAME IN docker-compose.yml
 
 ##For Developer
 ---------------
